@@ -25,6 +25,7 @@ public:
 	bool showDamageEffect = false;
 	float damageEffectTimer = 0.6f;
 	sf::VertexArray wallLines;
+	std::vector<short> intersected;
 
 	static sf::Vector2i getMouseMove(sf::Vector2i center, sf::RenderWindow& win) {
 		sf::Vector2i delta = sf::Mouse::getPosition(win) - center;
@@ -84,10 +85,13 @@ public:
 		else deltaTimes = 0;
 	}
 
-	void rayCast(std::vector<Wall>& walls) {
-		sf::Vector2f scrLeft, scrRight, scrStep;
+	void reserveIntersected(short wallsC) {
+		intersected.clear();
+		intersected.reserve(wallsC);
+	}
 
-		std::vector<short> intersectedWalls;
+	void rayCast(std::vector<Wall>& walls, std::vector<short>& intersectedWalls) {
+		sf::Vector2f scrLeft, scrRight, scrStep;
 
 		scrLeft = sf::Vector2f(std::cos(this->angle - PLAYER_FOV / 2), std::sin(this->angle - PLAYER_FOV / 2)) / std::cos(PLAYER_FOV / 2) + getXY();
 		scrRight = sf::Vector2f(std::cos(this->angle + PLAYER_FOV / 2), std::sin(this->angle + PLAYER_FOV / 2)) / std::cos(PLAYER_FOV / 2) + getXY();

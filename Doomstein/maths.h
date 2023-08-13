@@ -65,14 +65,8 @@ int getRandInt(int l, int h) {
 }
 
 bool isIntersect(sf::Vector2f ray1, sf::Vector2f ray2, sf::Vector2f wall1, sf::Vector2f wall2) {
-	static float v1, v2, v3, v4;
-	v1 = (wall2.x - wall1.x) * (ray1.y - wall1.y) - (wall2.y - wall1.y) * (ray1.x - wall1.x);
-	v2 = (wall2.x - wall1.x) * (ray2.y - wall1.y) - (wall2.y - wall1.y) * (ray2.x - wall1.x);
-	v3 = (ray2.x - ray1.x) * (wall1.y - ray1.y) - (ray2.y - ray1.y) * (wall1.x - ray1.x);
-	v4 = (ray2.x - ray1.x) * (wall2.y - ray1.y) - (ray2.y - ray1.y) * (wall2.x - ray1.x);
-	return (v1 * v2) < 0 && (v3 * v4) < 0;
-}
-
-uint8_t floorTexture(uint8_t x, uint8_t y) {
-	return x ^ y;
+	return (((wall2.x - wall1.x) * (ray1.y - wall1.y) - (wall2.y - wall1.y) * (ray1.x - wall1.x)) *
+		((wall2.x - wall1.x) * (ray2.y - wall1.y) - (wall2.y - wall1.y) * (ray2.x - wall1.x))) <= 0.0f &&
+		(((ray2.x - ray1.x) * (wall1.y - ray1.y) - (ray2.y - ray1.y) * (wall1.x - ray1.x)) *
+			((ray2.x - ray1.x) * (wall2.y - ray1.y) - (ray2.y - ray1.y) * (wall2.x - ray1.x))) <= 0.0f;
 }

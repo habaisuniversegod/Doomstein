@@ -86,6 +86,8 @@ void gameState(sf::RenderWindow& win) {
 
 	Player player(sf::Vector3f(0, 0, 0), 0);
 	World world(&player);
+
+	player.getCamera().reserveIntersected(world.getWalls().size());
 	
 	sf::RenderTexture preFX;
 	preFX.create(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -237,7 +239,7 @@ void gameState(sf::RenderWindow& win) {
 		player.update(timeStuff::deltaTime, world.getWalls());
 		player.rotate((float)(Camera::getMouseMove(sf::Vector2i((sf::Vector2i)win.getSize() / 2), win).x) / 1000.0f);
 		player.getCamera().update(player.getPosition(), player.getAngle(), PLAYER_HEIGHT, player.moving, timeStuff::deltaTime);
-		player.getCamera().rayCast(world.getWalls());
+		player.getCamera().rayCast(world.getWalls(), player.getCamera().intersected);
 		player.getCamera().updateWallVertices(world.getWalls());
 
 		floorCeilDraw->setUniform("cameraLook", player.getAngle());
