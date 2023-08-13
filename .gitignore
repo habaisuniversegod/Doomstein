@@ -1,0 +1,6 @@
+**/x64
+ETST/
+MapEditor/
+*.png
+*.psd
+.vs/
