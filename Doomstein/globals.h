@@ -5,7 +5,8 @@
 class LevelLoader;
 class World;
 
-const char title[] = "Doomstein: Peredyornal (0.2_1)";
+const char title[] = "Doomstein: Peredyornal";
+const char version[] = "0.2.1 beta";
 
 const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 540;

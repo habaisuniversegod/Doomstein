@@ -152,13 +152,13 @@ void gameState(sf::RenderWindow& win) {
 	bool crashGame = false;
 
 	preFXSpr.setColor(sf::Color(255, 255, 255, 195));
-	music.getMusic("calm")->play();
+	music.getMusic("battle1")->play();
 	//win.setFramerateLimit(15);
 	updateFPS();
 	resetFPS();
 
 	while (true) {
-		texts.getTextObject("debug_info").setString(std::string(title) + "\n\nFPS: " + std::to_string(timeStuff::fps) +
+		texts.getTextObject("debug_info").setString(std::string(title) + " (" + std::string(version) + ")\n\nFPS: " + std::to_string(timeStuff::fps) +
 			" (Max: " + std::to_string(timeStuff::maxfps) + " | Min: " + std::to_string(timeStuff::minfps) +
 			")\nPlayer X: " + std::to_string(player.getPositionXY().x) +
 			"\nPlayer Y: " + std::to_string(player.getPositionXY().y) +
@@ -189,11 +189,11 @@ void gameState(sf::RenderWindow& win) {
 					static bool order = false;
 					order = !order;
 					std::thread thread(changeMap__, std::ref(isEnd), (int)order, std::ref(world), std::ref(player));
-					music.getMusic("calm")->pause();
+					music.getMusic("battle1")->pause();
 					win.setVerticalSyncEnabled(1);
 					loadingState(win, thread, isEnd);
 					win.setVerticalSyncEnabled(0);
-					music.getMusic("calm")->play();
+					music.getMusic("battle1")->play();
 					screenFade = true; }
 						break;
 					case sf::Keyboard::F12:
@@ -259,7 +259,7 @@ void gameState(sf::RenderWindow& win) {
 			if (exitAnimTimer <= 0.0f) {
 				win.setMouseCursorVisible(true);
 				win.setFramerateLimit(60);
-				music.getMusic("calm")->stop();
+				music.getMusic("battle1")->stop();
 				music.getMusic("main")->play();
 				return;
 			}
@@ -305,6 +305,7 @@ void menuState(sf::RenderWindow& win) {
 	sf::RectangleShape progressBarBg;
 	sf::RectangleShape progressBarLine;
 	sf::Text* hintTextObjPtr = nullptr;
+	sf::Text* versTextObjPtr = nullptr;
 
 	progressBarBg.setFillColor(sf::Color(31, 31, 31));
 	progressBarLine.setFillColor(sf::Color(240, 225, 16));
@@ -335,9 +336,12 @@ void menuState(sf::RenderWindow& win) {
 			playButton = textures.otherTextures["play_button"];
 			menuBG = textures.otherTextures["menu_bg"];
 
+			texts.addTextObject("version", 12, "pixel", sf::Color::White, { 3, 3});
 			texts.addTextObject("hint", 28, "pixel2_cyrillic", sf::Color::White, {10, SCREEN_HEIGHT - 65});
 			hintTextObjPtr = &texts.getTextObject("hint");
+			versTextObjPtr = &texts.getTextObject("version");
 			hintTextObjPtr->setString(getRandomHint());
+			versTextObjPtr->setString(version);
 
 			logo->spr.setPosition(SCREEN_WIDTH / 2 - logo->tx.getSize().x / 2, 0);
 			playButton->spr.setPosition(SCREEN_WIDTH / 2 - playButton->tx.getSize().x / 2, 320);
@@ -411,6 +415,7 @@ void menuState(sf::RenderWindow& win) {
 		win.draw(progressBarBg);
 		win.draw(progressBarLine);
 		if (hintTextObjPtr != nullptr) win.draw(*hintTextObjPtr);
+		if (versTextObjPtr != nullptr) win.draw(*versTextObjPtr);
 		if (logo != nullptr) win.draw(logo->spr);
 		if (playButton != nullptr) win.draw(playButton->spr);
 		win.display();
@@ -420,7 +425,7 @@ void menuState(sf::RenderWindow& win) {
 }
 
 int main() {
-	sf::RenderWindow win(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), title, sf::Style::Close);
+	sf::RenderWindow win(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), std::string(title) + " (" + std::string(version) + ")", sf::Style::Close);
 
 	menuState(win);
 }

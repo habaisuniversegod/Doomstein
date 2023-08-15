@@ -51,8 +51,10 @@ public:
 };
 
 class MusicLoader {
-	std::map<std::string, std::string> musicPaths = { {"calm", "assets/music/calm.ogg"}, {"main", "assets/music/epic1.ogg"}};
-	std::map<std::string, float> musicVolume = { {"calm", 20.0f}, {"main", 80.0f} };
+	std::map<std::string, std::string> musicPaths = { {"calm", "assets/music/calm.ogg"}, 
+		{"main", "assets/music/epic1.ogg"},
+		{"battle1", "assets/music/battle1.ogg"}};
+	std::map<std::string, float> musicVolume = { {"calm", 20.0f}, {"main", 80.0f}, {"battle1", 95.0f}};
 	std::map < std::string, sf::Music* > musicObjects;
 
 public:
