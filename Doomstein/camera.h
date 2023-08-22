@@ -7,7 +7,10 @@
 #include "types.h"
 #pragma once
 
+class World;
+
 class Camera {
+	friend World;
 private:
 	float* visualDistances;
 	float* realDistances;

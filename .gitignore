@@ -4,3 +4,4 @@ MapEditor/
 *.png
 *.psd
 .vs/
+*.graphml

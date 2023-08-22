@@ -8,6 +8,7 @@
 #include "SFXLoader.h"
 #include "time.h"
 #include "loadingHint.h"
+#include "mob.h"
 
 
 TextureLoader textures;
@@ -89,6 +90,10 @@ void gameState(sf::RenderWindow& win) {
 
 	player.getCamera().reserveIntersected(world.getWalls().size());
 	
+	for (int i = 0; i < 10; i++){
+		world.addMob(new Mob(sf::Vector3f{ (float)getUniform(-100, 100), (float)getUniform(-100, 100), 1.0f}, 0.0f, TEST_MOB, &textures.otherTextures["pickup_aid"]->tx));
+	}
+
 	sf::RenderTexture preFX;
 	preFX.create(SCREEN_WIDTH, SCREEN_HEIGHT);
 	sf::Sprite preFXSpr;
@@ -134,7 +139,7 @@ void gameState(sf::RenderWindow& win) {
 	pixelShader->setUniform("screen_size", sf::Glsl::Vec2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	pixelShader->setUniform("pixelSize", 1.0f);
 
-	levels.loadLevel("test1", world, player);
+	levels.loadLevel("--empty--", world, player);
 	texts.addTextObject("debug_info", 12, "pixel", sf::Color::White, { 5, 5 });
 
 	win.setMouseCursorVisible(false);
@@ -241,6 +246,7 @@ void gameState(sf::RenderWindow& win) {
 		player.getCamera().update(player.getPosition(), player.getAngle(), PLAYER_HEIGHT, player.moving, timeStuff::deltaTime);
 		player.getCamera().rayCast(world.getWalls(), player.getCamera().intersected);
 		player.getCamera().updateWallVertices(world.getWalls());
+		world.updateMobs(timeStuff::deltaTime);
 
 		floorCeilDraw->setUniform("cameraLook", player.getAngle());
 		floorCeilDraw->setUniform("cameraPos", player.getCamera().getPosition());
@@ -248,6 +254,7 @@ void gameState(sf::RenderWindow& win) {
 		preFX.clear(sf::Color(0, 0, 0));
 		preFX.draw(bgSpr, floorCeilDraw);
 		preFX.draw(player.getCamera().wallLines, &textures.otherTextures["wall_sheet"]->tx);
+		world.drawMobs(preFX, player.getCamera());
 		player.getCamera().drawOverlay(preFX, textures.otherTextures["w000_overlay"], timeStuff::deltaTime);
 
 		preFX.draw(vignetteLayer, vignetteShader);

@@ -7,6 +7,7 @@ class World {
 	friend LevelLoader;
 
 	std::vector<Wall> walls;
+	std::vector<Entity*> entities;
 	Player* player;
 
 public:
@@ -43,6 +44,23 @@ public:
 			surface.clear({ 255, 255, 255 });
 			surface.draw(lines);
 			surface.draw(entityPointer);
+		}
+	}
+
+	void addMob(Entity* mob) {
+		entities.push_back(mob);
+	}
+
+	void updateMobs(float deltaTime) {
+		for (Entity* e : entities)
+			e->update(deltaTime, walls);
+	}
+
+	void drawMobs(sf::RenderTarget& surface, Camera& camera) {
+		std::sort(entities.begin(), entities.end(), [](Entity* a, Entity* b) {return a->playerDist < b->playerDist; });
+		for (int i = entities.size(); i > 0;) {
+			i--;
+			entities[i]->draw(surface, camera.realDistances, camera.visualDistances, entities[i]->getScreenProjection(camera.position, camera.angle));
 		}
 	}
 

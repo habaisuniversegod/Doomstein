@@ -18,7 +18,8 @@ class TextureLoader {
 		{"w000_overlay", "assets/textures/weapons/w000_overlay.png"},
 		{"logo", "assets/gui/game_logo.png"},
 		{"play_button", "assets/gui/play_button.png"},
-		{"menu_bg", "assets/textures/menu_bg.png"}};
+		{"menu_bg", "assets/textures/menu_bg.png"},
+		{"pickup_aid", "assets/textures/pickups/aid.png"} };
 
 public:
 	std::map<std::string, SFPair*> otherTextures;
@@ -111,6 +112,12 @@ public:
 	}
 
 	void loadLevel(std::string levelName, World& world, Player& player) {
+		if (levelName == "--empty--") {
+			player.angle = 0;
+			player.position = { 0.0f, 0.0f, 0.0f };
+			world.walls.clear();
+			return;
+		}
 		if (levelsData.count(levelName) == 0) {
 			log(ERROR, "Level '" + levelName + "' not found or cannot be loaded!");
 			LevelData data;

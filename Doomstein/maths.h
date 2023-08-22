@@ -64,6 +64,10 @@ int getRandInt(int l, int h) {
 	return l + std::rand() % (h - l);
 }
 
+double getUniform(double l, double h) {
+	return l + std::rand() / 32767.0 * (h - l);
+}
+
 bool isIntersect(sf::Vector2f ray1, sf::Vector2f ray2, sf::Vector2f wall1, sf::Vector2f wall2) {
 	return (((wall2.x - wall1.x) * (ray1.y - wall1.y) - (wall2.y - wall1.y) * (ray1.x - wall1.x)) *
 		((wall2.x - wall1.x) * (ray2.y - wall1.y) - (wall2.y - wall1.y) * (ray2.x - wall1.x))) <= 0.0f &&
